@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GoldMusic</string>
+    <string name="title_activity_list">ListActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title">Title</string>
+    <string name="info">Info</string>
+    <string name="time">00:00</string>
+    <string name="dialog_fragment">Hello im dialog fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_music_player">MusicPlayerActivity</string>
+</resources>

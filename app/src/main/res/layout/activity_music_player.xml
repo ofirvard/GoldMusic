@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ofir.goldmusic.MusicPlayerActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/seek_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gold"
+            android:fitsSystemWindows="true"
+            android:minHeight="?attr/actionBarSize"
+            android:subtitleTextColor="@color/silver"
+            android:theme="?attr/actionBarTheme"
+            android:titleTextColor="@color/silver"/>
+
+        <GridView
+            android:id="@+id/grid"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:animationCache="false"
+            android:clipToPadding="true"
+            android:fitsSystemWindows="true"
+            android:gravity="center"
+            android:numColumns="auto_fit"
+            android:paddingStart="10sp"
+            android:scrollingCache="false"
+            android:smoothScrollbar="true"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10sp"/>
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:max="100"
+        android:orientation="horizontal"
+        android:progress="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/total_time"
+        app:layout_constraintStart_toEndOf="@+id/current_time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.89"/>
+
+    <TextView
+        android:id="@+id/current_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/time"
+        android:textColor="@color/silverDark"
+        app:layout_constraintBottom_toBottomOf="@id/seek_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/seek_bar"/>
+
+    <TextView
+        android:id="@+id/total_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/time"
+        android:textColor="@color/silverDark"
+        app:layout_constraintBottom_toBottomOf="@id/seek_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/seek_bar"/>
+
+    <ImageView
+        android:id="@+id/next"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/gold"
+        android:onClick="next"
+        android:src="@android:drawable/ic_media_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="h,3:2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"/>
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/gold"
+        android:onClick="previous"
+        android:src="@android:drawable/ic_media_previous"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="h,3:2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lines="2"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:text="@string/title"
+        android:textAlignment="textStart"
+        android:textColor="@color/goldDark"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/info"
+        app:layout_constraintEnd_toStartOf="@+id/next"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"/>
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:paddingLeft="15sp"
+        android:paddingRight="15sp"
+        android:text="@string/info"
+        android:textAlignment="textStart"
+        android:textColor="@color/goldDark"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/next"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toBottomOf="@id/title"/>
+
+    <!--todo restor this-->
+    <!--<android.support.v4.view.ViewPager-->
+    <!--android:id="@+id/song_pager"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@id/seek_bar"/>-->
+</android.support.constraint.ConstraintLayout>
