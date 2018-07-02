@@ -11,19 +11,33 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArtistActivity">
-
+        <activity android:name=".deprecated.ArtistActivity">
         </activity>
         <activity
-            android:name=".SongActivity"
+            android:name=".deprecated.SongActivity"
             android:label="@string/title_activity_list">
         </activity>
-        <activity android:name=".AlbumActivity">
+        <activity android:name=".deprecated.AlbumActivity">
         </activity>
-        <activity android:name=".MusicPlayerActivity">
+        <activity android:name=".deprecated.MusicPlayerActivity">
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".MainActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".tabs.MainTabbedActivity"
+            android:label="@string/title_activity_main_tabbed"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>

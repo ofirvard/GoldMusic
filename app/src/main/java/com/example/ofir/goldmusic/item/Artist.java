@@ -1,7 +1,5 @@
 package com.example.ofir.goldmusic.item;
 
-import com.example.ofir.goldmusic.Tools;
-
 import java.util.ArrayList;
 
 /**
@@ -13,23 +11,11 @@ public class Artist
     public String name;
     public ArrayList<Album> albums = new ArrayList<>();
 
-    public Artist(Album album)
-    {
-        this.name = album.artistName;
-        this.albums.add(album);
-    }
-
-    public Artist(String name)
-    {
-        this.name = name;
-    }
-
     public Artist(Song song)
     {
         this.name = song.artistName;
         addSong(song);
     }
-
 
     public void addSong(Song song)
     {
@@ -49,11 +35,6 @@ public class Artist
         }
     }
 
-    public void add(Album album)
-    {
-        albums.add(album);
-    }
-
     public ArrayList<Song> getSongs()
     {
         ArrayList<Song> songs = new ArrayList<>();
@@ -61,7 +42,6 @@ public class Artist
         {
             songs.addAll(album.songs);
         }
-        Tools.sortSongs(songs);
         return songs;
     }
 

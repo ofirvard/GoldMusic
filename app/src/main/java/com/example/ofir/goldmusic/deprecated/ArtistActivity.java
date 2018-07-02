@@ -1,4 +1,4 @@
-package com.example.ofir.goldmusic;
+package com.example.ofir.goldmusic.deprecated;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -50,8 +50,8 @@ public class ArtistActivity extends AppCompatActivity
         {
             new Library(this);
 
-            ArtistAdapter artistAdapter = new ArtistAdapter(this, Library.artists);
-            gridView.setAdapter(artistAdapter);
+//            ArtistAdapter artistAdapter = new ArtistAdapter(this, Library.artists);
+//            gridView.setAdapter(artistAdapter);
         }
     }
 

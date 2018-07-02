@@ -28,13 +28,6 @@ public class Album //implements Parcelable//todo try to figure this out
         this.cover = BitmapFactory.decodeFile(cover);
     }
 
-    public Album(String name, String artistName, int cover, Context context)
-    {
-        this.name = name;
-        this.artistName = artistName;
-        this.cover = BitmapFactory.decodeResource(context.getResources(), cover);
-    }
-
     public Album(Song song, Artist artist)
     {
         this.name = song.albumName;
@@ -55,61 +48,4 @@ public class Album //implements Parcelable//todo try to figure this out
     {
         return name + "|" + artistName;
     }
-
-//    protected Album(Parcel in)
-//    {
-//        name = in.readString();
-//        cover = (Bitmap) in.readValue(Bitmap.class.getClassLoader());
-//        artistName = in.readString();
-//        coverPath = in.readString();
-//        if (in.readByte() == 0x01)
-//        {
-//            songs = new ArrayList<Song>();
-//            in.readList(songs, Song.class.getClassLoader());
-//        }
-//        else
-//        {
-//            songs = null;
-//        }
-//    }
-//
-//    @Override
-//    public int describeContents()
-//    {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel dest, int flags)
-//    {
-//        dest.writeString(name);
-//        dest.writeValue(cover);
-//        dest.writeString(artistName);
-//        dest.writeString(coverPath);
-//        if (songs == null)
-//        {
-//            dest.writeByte((byte) (0x00));
-//        }
-//        else
-//        {
-//            dest.writeByte((byte) (0x01));
-//            dest.writeList(songs);
-//        }
-//    }
-//
-//    @SuppressWarnings("unused")
-//    public static final Parcelable.Creator<Album> CREATOR = new Parcelable.Creator<Album>()
-//    {
-//        @Override
-//        public Album createFromParcel(Parcel in)
-//        {
-//            return new Album(in);
-//        }
-//
-//        @Override
-//        public Album[] newArray(int size)
-//        {
-//            return new Album[size];
-//        }
-//    };
 }

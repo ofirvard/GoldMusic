@@ -1,20 +1,19 @@
 package com.example.ofir.goldmusic.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.example.ofir.goldmusic.MusicPlayerActivity;
 import com.example.ofir.goldmusic.R;
 import com.example.ofir.goldmusic.item.ViewAdapterHolder;
 import com.example.ofir.goldmusic.item.Album;
 import com.example.ofir.goldmusic.item.Artist;
-import com.example.ofir.goldmusic.AlbumActivity;
+import com.example.ofir.goldmusic.tabs.TabAdapter;
 
 import java.util.ArrayList;
 
@@ -26,17 +25,18 @@ public class ArtistAdapter extends ArrayAdapter
 {
     Context context;
     ArrayList<Artist> artists;
-//    Bitmap noCover;
+    TabAdapter tabAdapter;
+//    MusicPlayer musicPlayer;
 
-    public ArtistAdapter(Context c, ArrayList<Artist> artists)
+    public ArtistAdapter(Context context, ArrayList<Artist> artists, TabAdapter tabAdapter)
     {
-        super(c, 0, artists);
-        context = c;
+        super(context, 0, artists);
+        this.context = context;
         this.artists = artists;
-//        noCover = BitmapFactory.decodeResource(context.getResources(), R.drawable.unknown);
-
+        this.tabAdapter = tabAdapter;
     }
 
+    @NonNull
     public View getView(final int i, View convertView, ViewGroup parent)
     {
         ViewAdapterHolder holder;
@@ -92,10 +92,9 @@ public class ArtistAdapter extends ArrayAdapter
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(context, MusicPlayerActivity.class);
-                intent.putExtra("flag", 1);
-                intent.putExtra("artist", artist.name);
-                context.startActivity(intent);
+//                pagerAdapter.addFragment(new AlbumAdapter(context, artist.albumsPlusAll(), true, pagerAdapter), 2);
+                tabAdapter.add(new AlbumAdapter(context, artist.albumsPlusAll(), true, tabAdapter), 2);
+                tabAdapter.next();
             }
         };
         holder.single.setOnClickListener(openArtist);
@@ -112,6 +111,10 @@ public class ArtistAdapter extends ArrayAdapter
         switch (albums.size())
         {
             case 2:
+//                setCover(holder.top_left, ImageLoader.getAlbumart(context,albums.get(0).songs.get(0).albumId));
+//                setCover(holder.top_right, ImageLoader.getAlbumart(context,albums.get(1).songs.get(0).albumId));
+//                setCover(holder.bottom_left, ImageLoader.getAlbumart(context,albums.get(1).songs.get(0).albumId));
+//                setCover(holder.bottom_right, ImageLoader.getAlbumart(context,albums.get(0).songs.get(0).albumId));
                 setCover(holder.top_left, albums.get(0).cover);
                 setCover(holder.top_right, albums.get(1).cover);
                 setCover(holder.bottom_left, albums.get(1).cover);

@@ -3,21 +3,23 @@ package com.example.ofir.goldmusic.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
-import com.example.ofir.goldmusic.MusicPlayerActivity;
+import com.example.ofir.goldmusic.MusicPlayer;
+import com.example.ofir.goldmusic.deprecated.MusicPlayerActivity;
 import com.example.ofir.goldmusic.R;
 import com.example.ofir.goldmusic.item.ViewAdapterHolder;
 import com.example.ofir.goldmusic.item.Album;
-import com.example.ofir.goldmusic.SongActivity;
+import com.example.ofir.goldmusic.tabs.TabAdapter;
 
 import java.util.ArrayList;
 
@@ -30,15 +32,19 @@ public class AlbumAdapter extends ArrayAdapter
     Context context;
     ArrayList<Album> albums;
     boolean includesAll;
+    //    MusicPlayer musicPlayer;
+    TabAdapter pagerAdapter;
 
-    public AlbumAdapter(Context c, ArrayList<Album> albums, boolean includesAll)
+    AlbumAdapter(Context c, ArrayList<Album> albums, boolean includesAll, TabAdapter pagerAdapter)
     {
         super(c, 0, albums);
         context = c;
         this.albums = albums;
         this.includesAll = includesAll;
+        this.pagerAdapter = pagerAdapter;
     }
 
+    @NonNull
     public View getView(final int i, View convertView, ViewGroup parent)
     {
         ViewAdapterHolder holder;
@@ -94,19 +100,7 @@ public class AlbumAdapter extends ArrayAdapter
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(context, MusicPlayerActivity.class);
-                if (includesAll && i == 0)
-                {
-                    intent.putExtra("flag", 3);
-                    intent.putExtra("artist", album.artistName);
-                }
-                else
-                {
-                    intent.putExtra("flag", 2);
-                    intent.putExtra("artist", album.artistName);
-                    intent.putExtra("album", album.name);
-                }
-                context.startActivity(intent);
+                // TODO: 28-Jun-18 add here to song adapter
             }
         };
         holder.single.setOnClickListener(openAlbum);

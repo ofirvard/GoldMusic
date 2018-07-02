@@ -1,9 +1,8 @@
-package com.example.ofir.goldmusic;
+package com.example.ofir.goldmusic.deprecated;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,15 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ListAdapter;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toolbar;
 
-import com.example.ofir.goldmusic.adapters.AlbumAdapter;
-import com.example.ofir.goldmusic.adapters.ArtistAdapter;
+import com.example.ofir.goldmusic.Library;
+import com.example.ofir.goldmusic.MusicPlayer;
+import com.example.ofir.goldmusic.R;
 import com.example.ofir.goldmusic.adapters.PlaylistAdapter;
-import com.example.ofir.goldmusic.adapters.SongAdapter;
 
 public class MusicPlayerActivity extends AppCompatActivity
 {
@@ -112,8 +108,8 @@ public class MusicPlayerActivity extends AppCompatActivity
         gridView.setNumColumns(3);
         toolbar.setTitle("Gold Music");
         toolbar.setSubtitle("By Ofir");
-        ArtistAdapter artistAdapter = new ArtistAdapter(this, Library.artists);
-        gridView.setAdapter(artistAdapter);
+//        ArtistAdapter artistAdapter = new ArtistAdapter(this, Library.artists);
+//        gridView.setAdapter(artistAdapter);
     }
 
     private void setAlbums()
@@ -122,7 +118,7 @@ public class MusicPlayerActivity extends AppCompatActivity
         String artist = getIntent().getStringExtra("artist");
         toolbar.setTitle("Music");
         toolbar.setSubtitle("By " + artist);
-        gridView.setAdapter(new AlbumAdapter(this, Library.getAlbumsPlusAll(artist), true));
+//        gridView.setAdapter(new AlbumAdapter(this, Library.getAlbumsPlusAll(artist), true));
     }
 
     private void setSongs()
@@ -132,7 +128,7 @@ public class MusicPlayerActivity extends AppCompatActivity
         String album = getIntent().getStringExtra("album");
         toolbar.setTitle(album);
         toolbar.setSubtitle("By " + artist);
-        gridView.setAdapter(new SongAdapter(this, Library.getAlbumSongs(artist, album), musicPlayer));
+//        gridView.setAdapter(new SongAdapter(this, Library.getAlbumSongs(artist, album), musicPlayer));
     }
 
     private void setAllSongs()
@@ -141,7 +137,7 @@ public class MusicPlayerActivity extends AppCompatActivity
         String artist = getIntent().getStringExtra("artist");
         toolbar.setTitle("Music");
         toolbar.setSubtitle("By " + artist);
-        gridView.setAdapter(new SongAdapter(this, Library.getArtist(artist).getSongs(), musicPlayer));
+//        gridView.setAdapter(new SongAdapter(this, Library.getArtist(artist).getSongs(), musicPlayer));
     }
 
     public void next(View view)

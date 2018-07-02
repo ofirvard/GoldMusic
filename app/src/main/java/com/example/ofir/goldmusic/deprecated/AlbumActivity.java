@@ -1,4 +1,4 @@
-package com.example.ofir.goldmusic;
+package com.example.ofir.goldmusic.deprecated;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,14 +29,14 @@ public class AlbumActivity extends AppCompatActivity
 //        albums = (ArrayList<Album>) getIntent().getExtras().get("list");
 //        includesAll = getIntent().getExtras().getBoolean("includesAll");
         String artist = getIntent().getStringExtra("artist");
-        albums = Library.getAlbumsPlusAll(artist);
+//        albums = Library.getAlbumsPlusAll(artist);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(artist);
         musicPlayer = new MusicPlayer((ViewGroup) findViewById(android.R.id.content));
 
         GridView gridView = findViewById(R.id.grid);
-        gridView.setAdapter(new AlbumAdapter(this, albums, true));
+//        gridView.setAdapter(new AlbumAdapter(this, albums, true));
     }
 
     @Override

@@ -14,6 +14,8 @@ import com.example.ofir.goldmusic.item.Artist;
 import com.example.ofir.goldmusic.item.Song;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by ofir on 12/27/2017.
@@ -42,6 +44,7 @@ public class Library
                 int artistColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
                 int durationColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
                 int albumColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+                int albumIdColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
                 int dataColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
                 int isMusicColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.IS_MUSIC);
 
@@ -56,274 +59,108 @@ public class Library
                         String album = musicCursor.getString(albumColumn);
                         long duration = musicCursor.getLong(durationColumn);
                         String path = musicCursor.getString(dataColumn);
+                        long albumId = musicCursor.getLong(albumIdColumn);
 
                         if (artist.equals("<unknown>"))
                             artist = "Unknown";
                         if (album.equals("<unknown>"))
                             album = "Unknown";
 
-                        songs.add(new Song(title, album, artist, duration, id, path));
+                        songs.add(new Song(title, album, artist, duration, id, path, albumId));
                     }
                 }
                 while (musicCursor.moveToNext());
             }
             musicCursor.close();
 
-            //set artist and album
-            for (Song song : songs)
-            {
-                songToArtist(song);
-            }
-
-            //todo check why this messes up with song adapter
-            //set covers
-            ArrayList<Cover> covers = getCovers(context);
-            for (Artist artist : artists)
-            {
-                for (Album album : artist.albums)
-                {
-                    boolean found = false;
-                    for (Cover cover : covers)
-                    {
-                        if (album.name.equals(cover.albumName))
-                        {
-                            found = true;
-                            album.cover = BitmapFactory.decodeFile(cover.path);
-                            break;
-                        }
-                    }
-                    if (!found)
-                    {
-                        album.cover = BitmapFactory.decodeResource(context.getResources(), R.drawable.question_mark_low_res);
-                    }
-                }
-            }
-
-
-//            organiseAlbums(context);
-//            organiseArtists(context);
-//            setSongsToAlbums();
-//            setAlbumsToArtists();
-            sort();
+            sortSongs(context);
             libraryLoaded = true;
         }
     }
 
-    private ArrayList<Cover> getCovers(Context context)
+    //sets songs to artists and albums, then sorts it all
+    private void sortSongs(Context context)
     {
-        ArrayList<Cover> covers = new ArrayList<>();
-
-        ContentResolver musicResolver = context.getContentResolver();
-        Uri musicUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
-
-        if (musicCursor != null && musicCursor.moveToFirst())
-        {
-            //get columns
-            int titleColumn = musicCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM);
-            int coverColumn = musicCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART);
-
-            //add songs to list
-            do
-            {
-                String name = musicCursor.getString(titleColumn);
-                String cover = musicCursor.getString(coverColumn);
-
-                if (cover != null)
-                    covers.add(new Cover(name, cover));
-            }
-            while (musicCursor.moveToNext());
-        }
-        musicCursor.close();
-        return covers;
-    }
-
-    private void songToArtist(Song song)
-    {
-        boolean found = false;
-        for (Artist artist : artists)
-        {
-            if (artist.name.equals(song.artistName))
-            {
-                found = true;
-                artist.addSong(song);
-                break;
-            }
-        }
-        if (!found)
-        {
-            artists.add(new Artist(song));
-        }
-    }
-
-    void organiseAlbums(Context context)
-    {
-        ContentResolver musicResolver = context.getContentResolver();
-        Uri musicUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
-
-        if (musicCursor != null && musicCursor.moveToFirst())
-        {
-            //get columns
-            int titleColumn = musicCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM);
-            int artistColumn = musicCursor.getColumnIndex(MediaStore.Audio.Albums.ARTIST);
-            int coverColumn = musicCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART);
-
-            //add songs to list
-            do
-            {
-                String name = musicCursor.getString(titleColumn);
-                String cover = musicCursor.getString(coverColumn);
-                String artist = musicCursor.getString(artistColumn);
-
-                if (artist.equals("<unknown>"))
-                    artist = "Unknown";
-
-                if (cover == null)
-                    albums.add(new Album(name, artist, R.drawable.question_mark_low_res, context));
-                else
-                    albums.add(new Album(name, artist, cover));
-            }
-            while (musicCursor.moveToNext());
-        }
-//        musicCursor.close();
-    }
-
-    void organiseArtists(Context context)
-    {
-        ContentResolver musicResolver = context.getContentResolver();
-        Uri musicUri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
-
-        if (musicCursor != null && musicCursor.moveToFirst())
-        {
-            int artistColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
-
-            do
-            {
-                String artist = musicCursor.getString(artistColumn);
-
-                if (artist.equals("<unknown>"))
-                    artist = "Unknown";
-
-                artists.add(new Artist(artist));
-            }
-            while (musicCursor.moveToNext());
-        }
-//        musicCursor.close();
-    }
-
-    void setAlbumsToArtists()
-    {
-        for (Album album : albums)
-        {
-            for (Artist artist : artists)
-            {
-                if (artist.name.equals(album.artistName))
-                {
-//                    album.artistPath = artist;//todo restore this
-                    artist.add(album);
-                    break;
-                }
-            }
-        }
-    }
-
-    void setSongsToAlbums()
-    {
+        boolean foundArtist;
         for (Song song : songs)
         {
-            for (Album album : albums)
+            foundArtist = false;
+            for (Artist artist : artists)
             {
-                if (album.name.equals(song.albumName))
+                if (song.artistName.equals(artist.name))
                 {
-//                    song.coverPath = album.coverPath;
-                    song.album = album;//todo solve later
-                    album.add(song);
+                    artist.addSong(song);
+                    foundArtist = true;
                     break;
                 }
+            }
+            if (!foundArtist)
+                artists.add(new Artist(song));
+        }
+
+        //sorts all songs
+        sortSongs(songs);
+
+        //sort artists
+        sortArtists(artists);
+
+        //sort albums, songs and set cover
+        for (Artist artist : artists)
+        {
+            //albums
+            sortAlbums(artist.albums);
+
+            for (Album album : artist.albums)
+            {
+                //sort album songs
+                sortSongs(album.songs);
+
+                //set cover
+                album.cover = ImageLoader.getAlbumart(context, album.songs.get(0).albumId);
             }
         }
     }
 
-    void sort()
+    private static Comparator<Album> albumComparator = new Comparator<Album>()
     {
-        //first i remove empty albums
-//        for (Album album : albums)
-//            if (album.songs.isEmpty())
-//                albums.remove(album);
-//
-//        //remove empty artists
-//        for (Artist artist : artists)
-//            if (artist.albums.isEmpty())
-//                artists.remove(artist);
-
-        //sort
-        Tools.sortArtists(artists);
-        for (Artist artist : artists)
-            Tools.sortAlbums(artist.albums);
-        Tools.sortAlbums(albums);
-        for (Album album : albums)
-            Tools.sortSongs(album.songs);
-        Tools.sortSongs(songs);
-    }
-
-    public static Artist getArtist(String artistName)
-    {
-        for (Artist artist : artists)
-        {
-            if (artist.name.equals(artistName))
-                return artist;
-        }
-        return null;
-    }
-
-    public static ArrayList<Album> getAlbumsPlusAll(String artistName)
-    {
-        for (Artist artist : artists)
-        {
-            if (artist.name.equals(artistName))
-                return artist.albumsPlusAll();
-        }
-        return null;
-    }
-
-    public static ArrayList<Album> getAlbums(String artistName)
-    {
-        for (Artist artist : artists)
-        {
-            if (artist.name.equals(artistName))
-                return artist.albums;
-        }
-        return null;
-    }
-
-    public static ArrayList<Song> getAlbumSongs(String artistName, String albumName)//todo check this out
-    {
-        for (Album album : getAlbums(artistName))
-        {
-            if (album.name.equals(albumName))
-                return album.songs;
-        }
-        return null;
-    }
-
-    class Cover
-    {
-        String albumName;
-        String path;
-
-        public Cover(String albumName, String path)
-        {
-            this.albumName = albumName;
-            this.path = path;
-        }
-
         @Override
-        public String toString()
+        public int compare(Album o1, Album o2)
         {
-            return albumName;
+            return o1.name.compareTo(o2.name);
         }
+    };
+
+    private static Comparator<Artist> artistComparator = new Comparator<Artist>()
+    {
+        @Override
+        public int compare(Artist o1, Artist o2)
+        {
+            return o1.name.compareTo(o2.name);
+        }
+    };
+
+    private static Comparator<Song> songComparator = new Comparator<Song>()
+    {
+        @Override
+        public int compare(Song o1, Song o2)
+        {
+            return o1.title.compareTo(o2.title);
+        }
+    };
+
+    public static void sortArtists(ArrayList<Artist> list)
+    {
+        Collections.sort(list, artistComparator);
+    }
+
+    public static void sortAlbums(ArrayList<Album> list)
+    {
+        Collections.sort(list, albumComparator);
+    }
+
+    public static void sortSongs(ArrayList<Song> list)
+    {
+        Collections.sort(list, songComparator);
     }
 
 //    ArrayList<Song> search(String name)//// TODO: 8/19/2017 impalement this

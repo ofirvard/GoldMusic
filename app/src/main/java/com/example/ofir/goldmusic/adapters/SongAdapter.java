@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.example.ofir.goldmusic.ImageLoader;
 import com.example.ofir.goldmusic.MusicPlayer;
 import com.example.ofir.goldmusic.R;
 import com.example.ofir.goldmusic.item.ViewAdapterHolder;
@@ -58,7 +59,7 @@ public class SongAdapter extends ArrayAdapter
         holder.info.setText(song.info());
 
         //set cover
-        setCover(holder.cover, song.album.cover);
+        setCover(holder.cover, song.albumId);
 
         //todo onclick
         //set onclick addToEnd
@@ -79,12 +80,9 @@ public class SongAdapter extends ArrayAdapter
         return convertView;
     }
 
-    private void setCover(ImageView imageView, Bitmap cover)
+    private void setCover(ImageView imageView, long cover)
     {
-        if (cover != null)
-        {
-            BitmapWorkerTask task = new BitmapWorkerTask(imageView);
-            task.execute(cover);
-        }
+        BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+        task.execute(ImageLoader.getAlbumart(context, cover));
     }
 }

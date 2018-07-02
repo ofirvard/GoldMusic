@@ -1,4 +1,4 @@
-package com.example.ofir.goldmusic;
+package com.example.ofir.goldmusic.deprecated;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,13 +33,13 @@ public class SongActivity extends AppCompatActivity
         int flag = getIntent().getExtras().getInt("flag");
         if (flag == 1)
         {
-            songs = Library.getArtist(artist).getSongs();
+//            songs = Library.getArtist(artist).getSongs();
             toolbar.setTitle(artist);
         }
         if (flag == 2)
         {
             String album = getIntent().getStringExtra("album");
-            songs = Library.getAlbumSongs(artist, album);
+//            songs = Library.getAlbumSongs(artist, album);
             toolbar.setTitle(album);
         }
 

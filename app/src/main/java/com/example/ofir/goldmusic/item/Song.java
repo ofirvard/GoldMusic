@@ -14,14 +14,16 @@ public class Song //implements Parcelable//todo restore this
     public String title;
     public String path;
     public String albumName;
+    public String albumArtistName;
     public String artistName;
     public String durationS;
     public String coverPath;
     public long duration;
     public long id;
+    public long albumId;
     public Album album;
 
-    public Song(String title, String albumName, String artistName, long duration, long id, String path)
+    public Song(String title, String albumName, String artistName, long duration, long id, String path, long albumId)
     {
         this.title = title;
         this.albumName = albumName;
@@ -29,6 +31,7 @@ public class Song //implements Parcelable//todo restore this
         this.duration = duration;
         this.id = id;
         this.path = path;
+        this.albumId = albumId;
 
         //duration as string
         long temp = duration / 1000;

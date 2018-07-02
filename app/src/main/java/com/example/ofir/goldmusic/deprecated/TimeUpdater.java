@@ -1,7 +1,8 @@
-package com.example.ofir.goldmusic;
+package com.example.ofir.goldmusic.deprecated;
 
 import android.os.Handler;
-import android.widget.TextView;
+
+import com.example.ofir.goldmusic.MusicPlayer;
 
 /**
  * Created by ofir on 2/28/2018.
@@ -27,7 +28,7 @@ public class TimeUpdater implements Runnable
     @Override
     public void run()
     {
-        if (MusicPlayer.mediaPlayer != null)
+//        if (MusicPlayer.mediaPlayer != null)
             musicPlayer.updateTime();
         handler.postDelayed(this, 1000);
     }
